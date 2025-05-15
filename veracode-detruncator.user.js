@@ -5,21 +5,28 @@
 // @description  Fix Veracode's dumb truncation of the application profile name in the UI
 // @author       Joshua Brule
 // @match        https://analysiscenter.veracode.com/*
-// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    window.setInterval(function(){
-    let contextHeader = document.querySelector("#ContextHeader");
+    window.setInterval(() => {
+        let contextHeader = document.querySelector("#ContextHeader");
 
-    if(contextHeader != null){
-        let originalTitle = contextHeader.attributes["data-original-title"];
-        if(contextHeader.innerText != originalTitle.textContent){
-            contextHeader.innerText = originalTitle.textContent;
+        if(contextHeader){
+            try{
+                let originalTitle = contextHeader.attributes["data-original-title"];
+
+                if(originalTitle && contextHeader.innerText != originalTitle.textContent){
+                    contextHeader.innerText = originalTitle.textContent;
+                    contextHeader.style.maxWidth = "none";
+                    console.log("TamperMonkey Veracode Application Profile Detruncator detruncated the application name");
+                }
+            }
+            catch(e){
+                console.error(e);
+            }
         }
-    }
     },5000);
 })();
